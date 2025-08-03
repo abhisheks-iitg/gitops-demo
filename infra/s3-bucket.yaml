@@ -1,0 +1,23 @@
+# Only contains declarative infra spec
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: abhisheks-gitops-demo-bucket
+spec:
+  forProvider:
+    acl: private
+    region: us-west-2
+  providerConfigRef:
+    name: default
+---
+apiVersion: aws.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: aws-creds       # Reference to pre-created in-cluster secret
+      key: creds
